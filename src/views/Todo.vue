@@ -11,9 +11,9 @@
       hide-details
       clearable
     ></v-text-field>
-    <v-list class="pt-0" flat two-line>
+    <v-list v-if="$store.state.tasks .length" class="pt-0" flat two-line>
       <!-- <v-list-item-group v-model="settings" multiple active-class=""> -->
-      <div v-for="task in tasks" :key="task.id">
+      <div v-for="task in $store.state.tasks" :key="task.id">
         <v-list-item
           @click="doneTask(task.id)"
           :class="{ 'blue lighten-5': task.done }"
@@ -42,6 +42,10 @@
       </div>
       <!-- </v-list-item-group> -->
     </v-list>
+    <div class="noTask" v-else>
+      <v-icon color="primary" size="100">mdi-check</v-icon>
+      <div class="text-h5 primary--text">No Task</div>
+    </div>
   </div>
 </template>
 
@@ -52,42 +56,37 @@ export default {
   name: "Todo",
   data() {
     return {
-      newTask: '',
-      tasks: [
-        {
-          id: 1,
-          title: "bangun tidur",
-          done: false,
-        },
-        {
-          id: 2,
-          title: "olahraga",
-          done: false,
-        },
-        {
-          id: 3,
-          title: "sarapan",
-          done: false,
-        },
-      ],
+      newTask: "",
     };
   },
   methods: {
     addTask () {
-      let newTask = {
-        id: Date.now(),
-        title: this.newTask
-      }
-      this.tasks.push(newTask)
+      this.$store.commit('addTask', this.newTask)
       this.newTask = ''
     },
     doneTask(id) {
-      let task = this.tasks.filter((task) => task.id === id)[0];
-      task.done = !task.done;
+      this.$store.commit('doneTask', id)
     },
     deleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id);
+      this.$store.commit('deleteTask', id)
     },
   },
 };
 </script>
+
+<style>
+  .noTask {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+  }
+  /* .noTask
+    position: absolute */
+    /* left: 50%
+    top: 50%
+    transform: translate(-50%, -50%)
+    opacity: 0.5 */
+</style>
