@@ -21,18 +21,21 @@ export default new Vuex.Store({
         done: false,
       },
     ],
+    snackbar: {
+      show: true
+    },
   },
   mutations: {
     addTask(state, newTask) {
       let addNewTask = {
         id: Date.now(),
         title: newTask,
+        done: false
       };
       state.tasks.push(addNewTask);
       // this.newTask = "";
     },
     doneTask(state, id) {
-
       let task = state.tasks.filter((task) => task.id === id)[0];
       task.done = !task.done
     },

@@ -70,12 +70,17 @@
 
     <v-main>
       <router-view></router-view>
+      <Snackbar />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import Snackbar from '@/components/Todo/Snackbar.vue'
   export default {
+    components: {
+      Snackbar
+    },
     data() {
       return {
         drawer: null,
